@@ -7,11 +7,12 @@ import com.IonicPartnersTask.utilities.Driver;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 
 public class TestsStepDefs {
-
 
 
     @Given("the user in the main page")
@@ -29,6 +30,7 @@ public class TestsStepDefs {
         BrowserUtils.waitFor(2);
 
     }
+
     @Then("the user verify the blog page is displayed")
     public void theUserVerifyTheBlogPageIsDisplayed() {
         System.out.println("Driver.get().getTitle() = " + Driver.get().getTitle());
@@ -37,10 +39,9 @@ public class TestsStepDefs {
 
     @Then("the user scroll the page down")
     public void the_user_scroll_the_page_down() {
-        BrowserUtils.waitFor(3);
-        JavascriptExecutor js = (JavascriptExecutor) Driver.get();
-        js.executeScript("window.scrollBy(0,250)", "");
-        BrowserUtils.waitFor(3);
+        WebElement footer = Driver.get().findElement(By.id("footer"));
+        JavascriptExecutor jse = (JavascriptExecutor) Driver.get();
+        jse.executeScript("arguments[0].scrollIntoView(true);", footer);
 
 
     }
@@ -54,9 +55,21 @@ public class TestsStepDefs {
     public void the_user_click_on_the_icon(String string) {
 
         BrowserUtils.clickWithJS(Driver.get().findElement(By.cssSelector(".fa.fa-twitter")));
-        
+
 
     }
 
 
+    @Then("the address of the company is displayed")
+    public void theAddressOfTheCompanyIsDisplayed() {
+        WebElement companyAddress = Driver.get().findElement(By.xpath("//div[@class='logo-work']/p"));
+        Assert.assertTrue(companyAddress.isDisplayed());
+
+    }
+
+    @Then("the user verify the twitter page is displayed")
+    public void theUserVerifyTheTwitterPageIsDisplayed() {
+
+        Assert.assertTrue(Driver.get().getTitle().contains("Ionic Partners"));
+    }
 }
